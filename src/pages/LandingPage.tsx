@@ -485,7 +485,7 @@ const LandingPage: React.FC = () => {
   <h2 className="tracking-wide font-semibold text-2xl sm:text-3xl text-gray-800">
     WHY <span className="text-purple-700">CHOOSE</span> US?
   </h2>
-  <img src="/line.png" alt="Curved underline" class="mx-auto w-32 -mt-7" />
+  <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-7" />
 </div>
           {/* Unified responsive layout */}
           <div className="relative mx-auto w-full" style={{maxWidth:'min(880px, 100%)', height:'clamp(26rem, 60vw, 520px)'}}>
