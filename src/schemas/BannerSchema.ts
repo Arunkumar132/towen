@@ -77,6 +77,12 @@ export interface BannerSchema {
   isActive?: boolean | null;
   createdAt?: Date;
   updatedAt?: Date;
+
+  // ✅ Fix: Added customData field for CategoryCardGrid compatibility
+  customData?: {
+    discount?: string; // e.g. "20% OFF"
+    [key: string]: any; // allows flexible custom fields for future use
+  };
 }
 
 export interface BannerCreateInput {
@@ -90,6 +96,12 @@ export interface BannerCreateInput {
   ctaHref?: string | null;
   sortOrder?: number | null;
   isActive?: boolean | null;
+
+  // ✅ Optional when creating banners
+  customData?: {
+    discount?: string;
+    [key: string]: any;
+  };
 }
 
 export type BannerUpdateInput = Partial<BannerCreateInput>;
@@ -99,4 +111,5 @@ export const isBannerPlacement = (value: unknown): value is BannerPlacement =>
   BANNER_PLACEMENT_OPTIONS.some((option) => option.value === value);
 
 export const getBannerPlacementMeta = (placement: BannerPlacement) =>
-  BANNER_PLACEMENT_OPTIONS.find((option) => option.value === placement) ?? BANNER_PLACEMENT_OPTIONS[0];
+  BANNER_PLACEMENT_OPTIONS.find((option) => option.value === placement) ??
+  BANNER_PLACEMENT_OPTIONS[0];
