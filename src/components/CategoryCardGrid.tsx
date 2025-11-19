@@ -124,7 +124,7 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
                       <img
                         src={imageSrc}
                         alt={alt}
-                        className="absolute -bottom-8 -right-8 h-[400%] w-auto sm:h-[550%] sm:w-auto object-contain pointer-events-none"
+                        className="absolute -bottom-6 -right-4 h-[400%] w-auto sm:h-[550%] sm:w-auto object-contain pointer-events-none"
                       />
                     ) : (
                       <div className="absolute -bottom-4 -right-4 flex items-end justify-end h-[70%] w-[50%] text-xs text-gray-300 uppercase tracking-wide">

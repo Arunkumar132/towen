@@ -40,7 +40,7 @@ const PartyOrdersPage: React.FC = () => {
       <main className="mt-20 max-w-7xl mx-auto px-6 lg:px-10 w-full">
         {/* Hero image card */}
         {heroBannerSrc && (
-          <div className="rounded shadow-lg overflow-hidden mb-12 sm:mb-16 relative bg-black">
+          <div className="rounded shadow-lg overflow-hidden mb-12 sm:mb-16 relative bg-black rounded-[2rem]">
             <img
               src={heroBannerSrc}
               alt={heroBannerAlt}

@@ -372,13 +372,20 @@ const LandingPage: React.FC = () => {
           src="/banner3.png"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none select-none absolute left-4 top-4 w-[200px] sm:w-[360px] md:w-[420px] lg:w-[520px] object-contain drop-shadow-xl sm:left-[-128px] lg:left-[-192px]"
+          className="pointer-events-none select-none absolute top-[5px] left-[-110px] sm:left-[-180px] top-4 w-[200px] sm:w-[360px] md:w-[420px] lg:w-[520px] object-contain drop-shadow-xl lg:left-[-192px]"
+
         />
         <img
           src="/box.png"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none select-none absolute right-4 sm:-right-40 lg:-right-60 top-10 sm:top-2 lg:top-auto lg:bottom-0 w-30 sm:w-[360px] md:w-[460px] lg:w-[600px] object-contain drop-shadow-xl rotate-35"
+          className="
+  pointer-events-none select-none absolute 
+  right-[-130px] top-[460px] sm:-right-40 lg:-right-60 
+  top-10 sm:top-2 lg:top-auto lg:bottom-0 
+  w-[240px] sm:w-[320px] md:w-[460px] lg:w-[600px] 
+  object-contain drop-shadow-xl rotate-[35deg]
+"
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full flex items-center justify-center">
@@ -478,7 +485,7 @@ const LandingPage: React.FC = () => {
   <h2 className="tracking-wide font-semibold text-2xl sm:text-3xl text-gray-800">
     WHY <span className="text-purple-700">CHOOSE</span> US?
   </h2>
-  <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-7" />
+  <img src="/line.png" alt="Curved underline" class="mx-auto w-32 -mt-7" />
 </div>
           {/* Unified responsive layout */}
           <div className="relative mx-auto w-full" style={{maxWidth:'min(880px, 100%)', height:'clamp(26rem, 60vw, 520px)'}}>

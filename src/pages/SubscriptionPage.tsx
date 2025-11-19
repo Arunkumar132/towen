@@ -162,7 +162,7 @@ const SubscriptionPage: React.FC = () => {
       <main className="flex-1 w-full">
         <section className="mt-20 max-w-7xl mx-auto px-6 lg:px-10 w-full">
           {subscriptionHeroSrc ? (
-            <div className="rounded overflow-hidden shadow-lg relative bg-black">
+            <div className="relative rounded-[2rem] overflow-hidden bg-white">
               <img
                 src={subscriptionHeroSrc}
                 alt={subscriptionHeroAlt}
