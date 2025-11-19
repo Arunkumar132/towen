@@ -1,0 +1,375 @@
+import React, { useEffect, useRef, useState } from 'react';
+import Topbar from '../components/Topbar';
+import { Phone, Mail } from 'lucide-react';
+import Footer from '../components/Footer';
+import { usePlacementBanners } from '../stores/publicBannersStore';
+import { getBannerAlt, getBannerImageSrc } from '../utils/bannerUtils';
+import { useCustomerInquiriesStore } from '../stores/customerInquiriesStore';
+
+const ContactPage: React.FC = () => {
+  const { banners: contactBanners } = usePlacementBanners('contact');
+  const heroBanner = contactBanners[0];
+  const heroImageSrc = getBannerImageSrc(heroBanner);
+  const heroImageAlt = getBannerAlt(heroBanner, 'Contact hero banner');
+  const createInquiry = useCustomerInquiriesStore((state) => state.createInquiry);
+  const creating = useCustomerInquiriesStore((state) => state.creating);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [formError, setFormError] = useState<string | null>(null);
+  const [formSuccess, setFormSuccess] = useState<string | null>(null);
+  const [heroVisible, setHeroVisible] = useState(false);
+  const [infoVisible, setInfoVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
+
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const infoRef = useRef<HTMLDivElement | null>(null);
+  const formRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const revealTargets: Array<{ element: HTMLElement | null; onVisible: () => void }> = [
+      { element: heroRef.current, onVisible: () => setHeroVisible(true) },
+      { element: infoRef.current, onVisible: () => setInfoVisible(true) },
+      { element: formRef.current, onVisible: () => setFormVisible(true) },
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+          if (entry.target === heroRef.current) {
+            setHeroVisible(true);
+            observer.unobserve(entry.target);
+          }
+          if (entry.target === infoRef.current) {
+            setInfoVisible(true);
+            observer.unobserve(entry.target);
+          }
+          if (entry.target === formRef.current) {
+            setFormVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    revealTargets.forEach(({ element }) => {
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      revealTargets.forEach(({ element }) => {
+        if (element) {
+          observer.unobserve(element);
+        }
+      });
+      observer.disconnect();
+    };
+  }, []);
+
+  const validateForm = () => {
+    if (!name.trim()) {
+      setFormError('Please share your name so we know who is reaching out.');
+      return false;
+    }
+    if (!email.trim()) {
+      setFormError('Enter an email address so we can reply.');
+      return false;
+    }
+    if (!subject.trim()) {
+      setFormError('Add a subject to help us route your message.');
+      return false;
+    }
+    if (!message.trim()) {
+      setFormError('Please add a short message.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFormError(null);
+    setFormSuccess(null);
+
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      const createdId = await createInquiry({
+        name: name.trim(),
+        email: email.trim(),
+        subject: subject.trim(),
+        message: message.trim(),
+      });
+
+      if (!createdId) {
+        setFormError('We could not send your message. Please try again in a moment.');
+        return;
+      }
+
+      setFormSuccess('Thank you for reaching out. Someone from our team will respond soon.');
+      setName('');
+      setEmail('');
+      setSubject('');
+      setMessage('');
+    } catch (error) {
+      console.error('Failed to submit contact inquiry', error);
+      setFormError('We could not send your message. Please try again in a moment.');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <Topbar active="contact" />
+
+      {/* HERO */}
+      <section
+        ref={heroRef}
+        className="relative bg-gradient-to-r from-[#633591] via-purple-600 to-purple-700 text-white overflow-hidden mt-[4rem]"
+      >
+        {heroImageSrc && (
+          <figure className="absolute inset-0">
+            <img
+              src={heroImageSrc}
+              alt={heroImageAlt}
+              className="h-full w-full object-cover"
+              loading="lazy"
+              onError={(event) => {
+                const target = event.currentTarget as HTMLImageElement;
+                target.style.display = 'none';
+                const figure = target.closest('figure');
+                if (figure) {
+                  (figure as HTMLElement).style.display = 'none';
+                }
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#633591]/85 via-purple-600/75 to-purple-700/65" />
+          </figure>
+        )}
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-white/5 blur-3xl animate-pulse-slow" />
+          <div className="pointer-events-none absolute top-1/2 -right-32 h-80 w-80 rounded-full bg-purple-300/10 blur-3xl animate-float-gentle" />
+          <div className="pointer-events-none absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-purple-400/8 blur-3xl animate-drift" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-16 sm:py-24">
+          <div className={`text-center transition-all duration-1000 ease-out ${
+            heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
+          }`}>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.28em] text-purple-100/90 backdrop-blur animate-bounce-subtle">
+              We would love to help
+            </span>
+            <h1 className={`mt-4 text-4xl sm:text-5xl font-bold leading-tight drop-shadow-lg transition-all duration-1000 delay-200 ease-out ${
+              heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
+            }`}>
+              Get in touch
+            </h1>
+            <p className={`mt-3 text-purple-100 max-w-2xl mx-auto text-base sm:text-lg transition-all duration-1000 delay-300 ease-out ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}>
+              We usually reply within 24 hours. Share a few details and our team will reach out.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* MAIN CONTENT */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 grid gap-14 lg:grid-cols-[0.9fr,1.1fr] items-start">
+          {/* Left: Contact methods */}
+          <div
+            ref={infoRef}
+            className={`space-y-8 transition-all duration-700 ease-out ${
+              infoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <header>
+              <h2 className="text-2xl font-semibold text-slate-900">Contact information</h2>
+              <p className="mt-2 text-sm text-slate-600">Get in touch with us for any inquiries or support.</p>
+            </header>
+            <div className="grid gap-6 lg:grid-cols-2">
+              {[
+                {
+                  label: 'Phone',
+                  description: '9943677277, 9943677577',
+                  icon: Phone,
+                  badge: 'Talk to us',
+                },
+                {
+                  label: 'Email',
+                  description: 'tovenofficial@gmail.com',
+                  icon: Mail,
+                  badge: 'Drop a note',
+                },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-transform duration-500 hover:scale-105 hover:shadow-xl"
+                >
+                  <div className="absolute inset-px rounded-[13px] bg-gradient-to-br from-purple-50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="relative flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-700 flex-shrink-0 shadow-inner">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-purple-100/60 px-3 py-0.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-purple-700">
+                        {item.badge}
+                      </span>
+                      <h3 className="text-sm font-semibold text-slate-900">{item.label}</h3>
+                      <p className="text-sm text-slate-600">{item.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Right: Form */}
+          <div
+            ref={formRef}
+            className={`relative transition-all duration-700 ease-out delay-100 ${
+              formVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="pointer-events-none absolute -inset-6 rounded-[2.25rem] bg-gradient-to-br from-purple-500/15 via-transparent to-orange-400/20 blur-3xl" />
+            <div className="relative bg-white rounded-2xl shadow-xl ring-1 ring-black/5 p-8 sm:p-10 md:p-12">
+              <h2 className="text-2xl font-semibold text-center text-slate-900">Send us a message</h2>
+              <div className="w-16 h-1 bg-purple-600 mx-auto mt-3 mb-10 rounded-full" />
+              <form className="grid gap-6" onSubmit={handleSubmit} noValidate>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <label className="sr-only" htmlFor="name">Name</label>
+                    <input
+                      id="name"
+                      type="text"
+                      placeholder="Name"
+                      value={name}
+                      onChange={(event) => {
+                        setName(event.target.value);
+                        if (formError) setFormError(null);
+                      }}
+                      className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                      disabled={creating}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="sr-only" htmlFor="email">Email</label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(event) => {
+                        setEmail(event.target.value);
+                        if (formError) setFormError(null);
+                      }}
+                      className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                      disabled={creating}
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="sr-only" htmlFor="subject">Subject</label>
+                  <input
+                    id="subject"
+                    type="text"
+                    placeholder="Subject"
+                    value={subject}
+                    onChange={(event) => {
+                      setSubject(event.target.value);
+                      if (formError) setFormError(null);
+                    }}
+                    className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    disabled={creating}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="sr-only" htmlFor="message">Message</label>
+                  <textarea
+                    id="message"
+                    placeholder="Write your message..."
+                    rows={6}
+                    value={message}
+                    onChange={(event) => {
+                      setMessage(event.target.value);
+                      if (formError) setFormError(null);
+                    }}
+                    className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm resize-y focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    disabled={creating}
+                    required
+                  />
+                </div>
+                {formError ? (
+                  <div className="rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-600">
+                    {formError}
+                  </div>
+                ) : null}
+                {formSuccess ? (
+                  <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700">
+                    {formSuccess}
+                  </div>
+                ) : null}
+                <button
+                  type="submit"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md py-3.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-orange-500/20"
+                  disabled={creating}
+                >
+                  {creating ? 'Sending…' : 'Send now'}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <Footer />
+      <style>{`
+        @keyframes pulseSlow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.05); }
+        }
+        @keyframes floatGentle {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(20px, -15px) scale(1.03); }
+          66% { transform: translate(-15px, 10px) scale(0.98); }
+        }
+        @keyframes drift {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(30px, -20px) rotate(3deg); }
+          50% { transform: translate(-20px, 15px) rotate(-2deg); }
+          75% { transform: translate(25px, 20px) rotate(1deg); }
+        }
+        @keyframes bounceSubtle {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+        .animate-pulse-slow {
+          animation: pulseSlow 8s ease-in-out infinite;
+        }
+        .animate-float-gentle {
+          animation: floatGentle 15s ease-in-out infinite;
+        }
+        .animate-drift {
+          animation: drift 20s ease-in-out infinite;
+        }
+        .animate-bounce-subtle {
+          animation: bounceSubtle 2s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default ContactPage;
