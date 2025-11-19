@@ -372,7 +372,7 @@ const LandingPage: React.FC = () => {
           src="/banner3.png"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none select-none absolute top-[5px] left-[-90px] sm:left-[-180px] top-4 w-[200px] sm:w-[360px] md:w-[420px] lg:w-[520px] object-contain drop-shadow-xl lg:left-[-192px]"
+          className="pointer-events-none select-none absolute top-[5px] left-[-125px] sm:left-[-180px] top-4 w-[200px] sm:w-[360px] md:w-[420px] lg:w-[520px] object-contain drop-shadow-xl lg:left-[-192px]"
 
         />
         <img
