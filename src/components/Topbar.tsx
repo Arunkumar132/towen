@@ -106,14 +106,15 @@ const Topbar: React.FC<TopbarProps> = ({ active, variant = 'default' }) => {
           {user ? (
             <Link
               to={ROUTES.DASHBOARD}
-              className="ml-2 text-sm bg-[#5A2D82] text-white px-7 py-3 rounded-full hover:bg-[#4B2472] transition font-semibold shadow-md"
+              className="rounded-full border border-[#5A2D82] px-7 py-4 text-center text-sm font-semibold text-[#5A2D82] bg-transparent"
             >
               Dashboard
             </Link>
           ) : (
             <button
               onClick={openSignup}
-              className="ml-2 text-sm bg-[#5A2D82] text-white px-7 py-3 rounded-full hover:bg-[#4B2472] transition font-semibold shadow-md"
+              className="rounded-full border border-[#5A2D82] px-5 py-2 text-center text-medium font-semibold text-[#5A2D82] bg-transparent"
+
             >
               Login
             </button>
@@ -171,13 +172,12 @@ const Topbar: React.FC<TopbarProps> = ({ active, variant = 'default' }) => {
                     Dashboard
                   </Link>
                 ) : (
-                  <button
-                    type="button"
+                  <div
                     onClick={handleAuthClick}
-                    className="rounded-full bg-[#5A2D82] px-7 py-4 text-sm font-semibold text-white transition hover:bg-[#4B2472] shadow-md"
+                    className="rounded-full border border-[#5A2D82] px-7 py-4 text-center text-sm font-semibold text-[#5A2D82] bg-transparent"
                   >
                     Login
-                  </button>
+                  </div>
                 )}
               </div>
             </div>

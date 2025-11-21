@@ -519,11 +519,11 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="relative py-[-8px] bg-[#F7FBF9]">
+      <section className="relative pt-1 pb-16 bg-[#F7FBF9]">
         <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-14">
             <h2 className="tracking-wide font-semibold text-2xl sm:text-3xl text-gray-800">
-              WHY <span className="text-[#5A2D82]">CHOOSE</span> US?
+              Why <span className="text-[#5A2D82]">Choose</span> Us?
             </h2>
             <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-7" />
           </div>
@@ -599,7 +599,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {studentOfferEnabled && studentDiscountLabel && (
-        <section className="bg-[#f4efff] py-10">
+        <section className="bg-[#f4efff] py-15">
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-4 text-[#2b0b57]">
               <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-md">
