@@ -20,6 +20,8 @@ const WHY_CHOOSE_US_ITEMS = [
   { title: 'Flexible Scheduling', description: 'Adjust your delivery days anytime.' },
 ];
 
+
+
 // Rotating word component (Trust -> Taste -> Love -> Quality) with fade-up animation
 const RotatingWord: React.FC = () => {
   const words = React.useRef(['Trust', 'Taste', 'Love', 'Quality']).current;
@@ -46,8 +48,8 @@ const RotatingWord: React.FC = () => {
     phase === 'enter'
       ? 'opacity-0 translate-y-4 animate-[fadeUp_0.4s_ease-out_forwards]'
       : phase === 'exit'
-      ? 'opacity-100 translate-y-0 animate-[fadeDown_0.3s_ease-in_forwards]'
-      : 'opacity-100';
+        ? 'opacity-100 translate-y-0 animate-[fadeDown_0.3s_ease-in_forwards]'
+        : 'opacity-100';
 
   return (
     <div className="min-h-[3rem] sm:min-h-[3.5rem] lg:min-h-[4rem] flex items-center justify-center md:justify-start select-none">
@@ -213,7 +215,14 @@ const RotatingWord: React.FC = () => {
             background-color: rgba(255, 255, 255, 0.15);
           }
         }
-        
+
+      @keyframes marqueeLoopImmediate {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+
+
         .animate-glow-pulse {
           animation: glow-pulse 4s ease-in-out infinite;
         }
@@ -357,7 +366,7 @@ const LandingPage: React.FC = () => {
   };
 
   // Random delays for bob animations
-  const randomDelays = React.useRef(Array.from({length:20},()=> (Math.random()*4 + 0.2).toFixed(2))).current;
+  const randomDelays = React.useRef(Array.from({ length: 20 }, () => (Math.random() * 4 + 0.2).toFixed(2))).current;
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
@@ -366,7 +375,7 @@ const LandingPage: React.FC = () => {
       <Topbar active="home" variant="landing" />
 
       {/* HERO - Swiggy-like layout with left/right images */}
-      <section className="relative bg-[#7a02cb] text-white overflow-hidden flex items-center justify-center pb-24 sm:pb-32" style={{minHeight:'calc(100vh - 4rem)', marginTop:'4rem'}}>
+      <section className="relative bg-[#5A2D82] text-white overflow-hidden flex items-center justify-center pb-24 sm:pb-32" style={{ minHeight: 'calc(100vh - 4rem)', marginTop: '4rem' }}>
         {/* Decorative edge images (visible on all sizes, smaller on mobile) */}
         <img
           src="/banner3.png"
@@ -381,9 +390,9 @@ const LandingPage: React.FC = () => {
           aria-hidden="true"
           className="
   pointer-events-none select-none absolute 
-  right-[-130px] top-[460px] sm:-right-40 lg:-right-60 
+  right-[-150px] top-[20px] sm:-right-40 lg:-right-60 
   top-10 sm:top-2 lg:top-auto lg:bottom-0 
-  w-[240px] sm:w-[320px] md:w-[460px] lg:w-[600px] 
+  w-[240px] sm:w-[300px] md:w-[460px] lg:w-[600px] 
   object-contain drop-shadow-xl rotate-[35deg]
 "
         />
@@ -423,11 +432,40 @@ const LandingPage: React.FC = () => {
           <div className="relative h-0">
             <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl">
               <div className="relative">
-                <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-amber-400/70 via-white/60 to-purple-500/70 blur-xl opacity-80" aria-hidden="true" />
-                <div className="relative rounded-[2.5rem] border border-white/80 bg-gradient-to-r from-amber-50 via-purple-50 to-white px-6 sm:px-12 py-4 sm:py-5 shadow-[0_24px_55px_-25px_rgba(64,0,128,0.7)] flex items-center justify-center">
-                  <p className="text-xs sm:text-sm md:text-base font-semibold text-purple-900 tracking-wide text-center">
-                    Where Every Bite Brings a Smile ✨ The Future Of Everyday Eating
+
+                {/* Background Glow */}
+                <div
+                  className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-amber-400/70 via-white/60 to-purple-500/70 blur-xl opacity-80"
+                  aria-hidden="true"
+                />
+
+                {/* Banner */}
+                <div className="relative rounded-[2.5rem] border border-white/80 bg-gradient-to-r from-amber-50 via-purple-50 to-white px-6 sm:px-12 py-4 sm:py-5 shadow-[0_24px_55px_-25px_rgba(64,0,128,0.7)] overflow-hidden">
+
+                  {/* Single moving line */}
+                  <p
+                    className="text-xl sm:text-base md:text-xl font-semibold text-[#5A2D82] tracking-wide whitespace-nowrap"
+                    style={{
+                      animation: "singleMarquee 10s linear infinite",
+                    }}
+                  >
+                    Breakfast | Lunch | Dinner - 3 Meals at just 159/Day
                   </p>
+
+                  {/* Animation */}
+                  <style>
+                    {`
+                @keyframes singleMarquee {
+                  0% {
+                    transform: translateX(110%);
+                  }
+                  100% {
+                    transform: translateX(-150%);
+                  }
+                }
+              `}
+                  </style>
+
                 </div>
               </div>
             </div>
@@ -435,12 +473,14 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
+
       {/* PRODUCT CARDS moved into hero */}
 
       {/* OFFERS BANNER */}
       <section className="bg-[#F7FBF9] py-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <h2 className="text-center font-semibold text-2xl sm:text-3xl mb-10">Our Exciting Offers for You</h2>
+          <h2 className="text-center font-semibold text-2xl sm:text-3xl mb-10">Our Exciting Offers</h2>
+          <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-15" />
           <div className="relative">
             <div
               className={`overflow-hidden aspect-[16/9] rounded-xl select-none ${slideCount > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}`}
@@ -479,17 +519,17 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="relative py-24 bg-[#F7FBF9]">
+      <section className="relative py-[-8px] bg-[#F7FBF9]">
         <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-14">
-  <h2 className="tracking-wide font-semibold text-2xl sm:text-3xl text-gray-800">
-    WHY <span className="text-purple-700">CHOOSE</span> US?
-  </h2>
-  <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-7" />
-</div>
+            <h2 className="tracking-wide font-semibold text-2xl sm:text-3xl text-gray-800">
+              WHY <span className="text-[#5A2D82]">CHOOSE</span> US?
+            </h2>
+            <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-7" />
+          </div>
           {/* Unified responsive layout */}
-          <div className="relative mx-auto w-full" style={{maxWidth:'min(880px, 100%)', height:'clamp(26rem, 60vw, 520px)'}}>
-            <div 
+          <div className="relative mx-auto w-full" style={{ maxWidth: 'min(880px, 100%)', height: 'clamp(26rem, 60vw, 520px)' }}>
+            <div
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-inner bg-gray-100 overflow-hidden flex items-center justify-center"
               style={{
                 width: 'clamp(14rem, 48vw, 420px)',
@@ -501,54 +541,54 @@ const LandingPage: React.FC = () => {
               <img src="/why-choose-bg.webp" alt="Why choose us" className="w-full h-full object-cover" />
             </div>
             {/* Cards */}
-            <div 
-              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#A020F0]"
+            <div
+              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#5A2D82]"
               style={{
                 top: 'clamp(-1rem, -3vw, 0rem)',
                 left: 'clamp(0.5rem, 5vw, 7rem)',
                 width: 'clamp(7.5rem, 35vw, 13rem)',
                 padding: 'clamp(0.7rem, 2vw, 1.25rem)',
-                animationDelay:`${(Number(randomDelays[8])||0)}s`
+                animationDelay: `${(Number(randomDelays[8]) || 0)}s`
               }}
             >
               <h3 className="font-semibold mb-2 text-sm sm:text-base">{WHY_CHOOSE_US_ITEMS[0].title}</h3>
               <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{WHY_CHOOSE_US_ITEMS[0].description}</p>
             </div>
-            <div 
-              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#A020F0]"
+            <div
+              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#5A2D82]"
               style={{
                 top: '65%',
                 left: 'clamp(1.5rem, 1vw, 2rem)',
                 transform: 'translateY(-50%)',
                 width: 'clamp(7.5rem, 35vw, 13rem)',
                 padding: 'clamp(0.7rem, 2vw, 1.25rem)',
-                animationDelay:`${(Number(randomDelays[9])||0)}s`
+                animationDelay: `${(Number(randomDelays[9]) || 0)}s`
               }}
             >
               <h3 className="font-semibold mb-2 text-sm sm:text-base">{WHY_CHOOSE_US_ITEMS[1].title}</h3>
               <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{WHY_CHOOSE_US_ITEMS[1].description}</p>
             </div>
-            <div 
-              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#A020F0]"
+            <div
+              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#5A2D82]"
               style={{
                 top: 'clamp(-0.5rem, -2vw, 0.5rem)',
                 right: 'clamp(0.5rem, 5vw, 7rem)',
                 width: 'clamp(7.5rem, 35vw, 13rem)',
                 padding: 'clamp(0.7rem, 2vw, 1.25rem)',
-                animationDelay:`${(Number(randomDelays[10])||0)}s`
+                animationDelay: `${(Number(randomDelays[10]) || 0)}s`
               }}
             >
               <h3 className="font-semibold mb-2 text-sm sm:text-base">{WHY_CHOOSE_US_ITEMS[2].title}</h3>
               <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{WHY_CHOOSE_US_ITEMS[2].description}</p>
             </div>
             <div
-              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#A020F0]"
+              className="absolute bg-[#E6E6FA] rounded-2xl shadow-xl animate-[bobCard_6s_ease-in-out_infinite] border-4 border-[#5A2D82]"
               style={{
                 bottom: 'clamp(0.5rem, -2vw, 2rem)',
                 right: 'clamp(0.5rem, 5vw, 4rem)',
                 width: 'clamp(7.5rem, 35vw, 13rem)',
                 padding: 'clamp(0.7rem, 2vw, 1.25rem)',
-                animationDelay:`${(Number(randomDelays[11])||0)}s`
+                animationDelay: `${(Number(randomDelays[11]) || 0)}s`
               }}
             >
               <h3 className="font-semibold mb-2 text-sm sm:text-base">{WHY_CHOOSE_US_ITEMS[3].title}</h3>
@@ -603,14 +643,10 @@ const LandingPage: React.FC = () => {
           {/* Section Header */}
           <div className="text-center mb-20">
             <div className="inline-block">
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-                Steps to <span className="bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">Order</span>
+              <h2 className="text-3xl sm:text-3xl font-bold text-gray-900 mb-4">
+                Steps to <span className="text-[#5A2D82]">Order</span>
               </h2>
-              <div className="flex items-center justify-center gap-2">
-                <div className="h-1 w-8 bg-gradient-to-r from-purple-600 to-purple-500 rounded-full animate-pulse" />
-                <div className="h-1 w-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full" />
-                <div className="h-1 w-8 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
-              </div>
+              <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-11" />
             </div>
             <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
               Get started in three simple steps and enjoy delicious meals delivered to your door
@@ -633,7 +669,7 @@ const LandingPage: React.FC = () => {
                   description: 'Browse our diverse menu featuring homemade quality dishes. Filter by dietary preferences, cuisine type, or let our chef\'s recommendations guide you.',
                   image: '/step1.webp',
                   color: 'from-purple-500 to-purple-700',
-                  accentColor: 'purple',
+                  accentColor: '#5A2D82',
                 },
                 {
                   number: '02',
@@ -641,7 +677,7 @@ const LandingPage: React.FC = () => {
                   description: 'Select your preferred meal combo, set delivery dates, and adjust portions. Our flexible scheduling ensures meals arrive exactly when you need them.',
                   image: '/step2.webp',
                   color: 'from-purple-600 to-purple-800',
-                  accentColor: 'purple',
+                  accentColor: '#502883',
                 },
                 {
                   number: '03',
@@ -649,16 +685,15 @@ const LandingPage: React.FC = () => {
                   description: 'Relax as your freshly prepared meals are delivered hot to your doorstep. Track your order in real-time and enjoy restaurant-quality food at home.',
                   image: '/step3.webp',
                   color: 'from-purple-500 to-purple-700',
-                  accentColor: 'purple',
+                  accentColor: '#502883',
                 },
               ].map((step, index) => {
                 const isEven = index % 2 === 1;
                 return (
                   <div
                     key={step.number}
-                    className={`group relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16 ${
-                      isEven ? 'lg:flex-row-reverse' : ''
-                    }`}
+                    className={`group relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16 ${isEven ? 'lg:flex-row-reverse' : ''
+                      }`}
                   >
                     {/* Step Number Badge - Desktop Center */}
                     <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
@@ -692,7 +727,7 @@ const LandingPage: React.FC = () => {
 
                         {/* Gradient border effect on hover */}
                         <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.color} opacity-0 group-hover/card:opacity-10 transition-opacity duration-500 pointer-events-none`} />
-                        
+
                         <div className="relative">
                           <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 mt-6">
                             {step.title}
@@ -715,7 +750,7 @@ const LandingPage: React.FC = () => {
                               </div>
                             </div>
                           </div>
-                          
+
                           {/* CTA Button */}
                           <button
                             onClick={handleGetStarted}
@@ -740,7 +775,7 @@ const LandingPage: React.FC = () => {
                       >
                         {/* Gradient border effect on hover */}
                         <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.color} opacity-0 group-hover/card:opacity-10 transition-opacity duration-500 pointer-events-none`} />
-                        
+
                         <div className={`relative ${isEven ? 'lg:flex lg:flex-col lg:items-end' : ''}`}>
                           <h3 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-4 ${isEven ? 'lg:text-right' : ''}`}>
                             {step.title}
@@ -748,13 +783,12 @@ const LandingPage: React.FC = () => {
                           <p className={`text-base text-gray-600 leading-relaxed mb-6 ${isEven ? 'lg:text-right' : ''}`}>
                             {step.description}
                           </p>
-                          
+
                           {/* CTA Button */}
                           <button
                             onClick={handleGetStarted}
-                            className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${step.color} text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ${
-                              isEven ? 'lg:flex-row-reverse' : ''
-                            }`}
+                            className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${step.color} text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ${isEven ? 'lg:flex-row-reverse' : ''
+                              }`}
                           >
                             <span>Get Started</span>
                             <ArrowRight className={`w-5 h-5 transition-transform group-hover/card:translate-x-1 ${isEven ? 'lg:rotate-180 lg:group-hover/card:-translate-x-1' : ''}`} />
@@ -775,7 +809,7 @@ const LandingPage: React.FC = () => {
                       >
                         {/* Glow effect */}
                         <div className={`absolute -inset-4 bg-gradient-to-br ${step.color} opacity-20 blur-2xl rounded-3xl transition-opacity duration-500 group-hover/img:opacity-40`} />
-                        
+
                         {/* Image container */}
                         <div className="relative rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-500 group-hover/img:scale-105 group-hover/img:rotate-2 w-full max-w-md mx-auto">
                           <div className="aspect-video bg-white rounded-2xl">
@@ -850,15 +884,13 @@ const LandingPage: React.FC = () => {
                     >
                       <span className="text-lg font-semibold text-gray-900">{faq.question}</span>
                       <ChevronDown
-                        className={`h-5 w-5 text-purple-600 flex-shrink-0 transition-transform duration-300 ${
-                          expandedFaqIndex === index ? 'rotate-180' : ''
-                        }`}
+                        className={`h-5 w-5 text-[#502883] flex-shrink-0 transition-transform duration-300 ${expandedFaqIndex === index ? 'rotate-180' : ''
+                          }`}
                       />
                     </button>
                     <div
-                      className={`overflow-hidden transition-all duration-300 ${
-                        expandedFaqIndex === index ? 'max-h-96' : 'max-h-0'
-                      }`}
+                      className={`overflow-hidden transition-all duration-300 ${expandedFaqIndex === index ? 'max-h-96' : 'max-h-0'
+                        }`}
                     >
                       <div className="px-6 pb-5 text-gray-600 leading-relaxed whitespace-pre-line">
                         {faq.answer}

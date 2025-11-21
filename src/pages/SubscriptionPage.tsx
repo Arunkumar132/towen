@@ -7,6 +7,7 @@ import { useUserRoleStore } from '../stores/userRoleStore';
 import { useLoginModalStore } from '../stores/loginModalStore';
 import { usePlacementBanners } from '../stores/publicBannersStore';
 import { getBannerAlt, getBannerImageSrc } from '../utils/bannerUtils';
+import { Truck } from 'lucide-react';
 
 type SubscriptionCard = {
   id: string;
@@ -161,27 +162,46 @@ const SubscriptionPage: React.FC = () => {
       <Topbar active="Subscription" />
       <main className="flex-1 w-full">
         <section className="mt-20 max-w-7xl mx-auto px-6 lg:px-10 w-full">
-          {subscriptionHeroSrc ? (
-            <div className="relative rounded-[2rem] overflow-hidden bg-white">
-              <img
-                src={subscriptionHeroSrc}
-                alt={subscriptionHeroAlt}
-                className="w-full h-64 sm:h-80 md:h-[520px] lg:h-[680px] object-cover"
-                onError={(event) => {
-                  const target = event.currentTarget as HTMLImageElement;
-                  target.style.display = 'none';
+  {subscriptionHeroSrc && (
+    <div className="relative rounded-[2rem] overflow-hidden bg-white">
+      <img
+        src={subscriptionHeroSrc}
+        alt={subscriptionHeroAlt}
+        className="w-full h-64 sm:h-80 md:h-[520px] lg:h-[680px] object-cover"
+        onError={(event) => {
+          const target = event.currentTarget as HTMLImageElement;
+          target.style.display = 'none';
+          const container = target.closest('div');
+          if (container) {
+            (container as HTMLElement).style.display = 'none';
+          }
+        }}
+      />
+    </div>
+  )}
 
-                  const container = target.closest('div');
-                  if (container) {
-                    (container as HTMLElement).style.display = 'none';
-                  }
-                }}
-              />
-            </div>
-          ) : null}
-        </section>
+  {/* Button below the banner */}
+<div className="mt-6 flex justify-center">
+  <button
+    className="rounded-full px-6 py-3 text-sm font-semibold text-white flex items-center gap-2 transition-all duration-200 ease-in-out
+               hover:bg-[#4B246E] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5A2D82]"
+    style={{ backgroundColor: '#5A2D82' }}
+    onClick={() => {
+      navigate('/check-delivery');
+    }}
+  >
+    <Truck className="w-4 h-4" />
+    Check Delivery Location
+  </button>
+</div>
 
-        <section className="max-w-6xl w-full mx-auto px-6 lg:px-10 py-16 lg:py-20">
+
+</section>
+
+
+        
+
+        <section className="max-w-6xl w-full mx-auto px-6 lg:px-10 py-10 lg:py-20">
           <div className="mb-10 flex flex-col gap-3 text-center">
             <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Pick a subscription that suits your rhythm</h2>
             <p className="text-sm text-slate-500 sm:text-base">

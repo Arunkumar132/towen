@@ -90,14 +90,13 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
   if (loading) {
     return (
       <div
-        className={`grid w-full gap-6 sm:gap-8 ${
-          mobileColumns === 2 ? 'grid-cols-2' : 'grid-cols-1'
-        } sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`}
+        className={`grid w-full gap-6 sm:gap-8 ${mobileColumns === 2 ? 'grid-cols-2' : 'grid-cols-1'
+          } sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`}
       >
         {Array.from({ length: maxItems || 3 }).map((_, i) => (
           <div
             key={i}
-            className="bg-gray-200 animate-pulse rounded-2xl h-48 sm:h-60"
+            className="bg-gray-200 animate-pulse rounded-2xl aspect-square"
           ></div>
         ))}
       </div>
@@ -118,11 +117,11 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
             const cta = getCardCta(banner);
             const discount = getCardDiscount(banner);
 
+            // === PROMO TILE VARIANT ===
             if (variant === 'promoTile') {
               const content = (
-                <div className="relative h-full flex flex-col justify-between p-4 sm:p-5 text-center sm:text-left">
-                  {/* Text Content */}
-                  <div className="flex flex-col items-center sm:items-start text-center sm:text-left z-20">
+                <div className="relative h-full w-full p-4 sm:p-5 flex flex-col justify-between">
+                  <div className="z-20 flex flex-col text-left items-start">
                     <h3 className="font-bold tracking-tight text-gray-800 text-lg sm:text-xl">
                       {title}
                     </h3>
@@ -138,15 +137,13 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
                     )}
                   </div>
 
-                  {/* Bottom Section */}
                   <div className="relative flex justify-between items-end mt-4">
                     {cta && (
                       <a
                         href={cta.href}
                         target={cta.target}
                         rel={cta.rel}
-                        className="relative z-30 flex items-center justify-center rounded-full bg-[#7851A9] p-2 text-white shadow-md hover:bg-[#6a4792] transition-colors"
-                        aria-label={cta.label}
+                        className="relative z-30 flex items-center justify-center rounded-full bg-[#502883] p-2 text-white shadow-md hover:bg-[#402069] transition-colors"
                       >
                         <ArrowRight size={20} />
                       </a>
@@ -156,13 +153,11 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
                       <img
                         src={imageSrc}
                         alt={alt}
-                        className="absolute -bottom-6 -right-4 h-[400%] w-auto sm:h-[550%] sm:w-auto object-contain pointer-events-none"
+                        className="absolute bottom-[-25px] right-[-25px] scale-90 origin-bottom-right object-contain pointer-events-none"
                       />
                     ) : (
-                      <div className="absolute -bottom-4 -right-4 flex items-end justify-end h-[70%] w-[50%] text-xs text-gray-300 uppercase tracking-wide">
-                        <div className="bg-gray-200 p-2 rounded-lg flex items-center justify-center">
-                          No Image
-                        </div>
+                      <div className="absolute inset-0 flex items-center justify-center text-xs text-gray-300 uppercase tracking-wide">
+                        No Image
                       </div>
                     )}
                   </div>
@@ -176,9 +171,7 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
                     href={cta.href}
                     target={cta.target}
                     rel={cta.rel}
-                    className={`relative block w-full h-48 sm:h-60 overflow-visible rounded-2xl bg-white shadow-md transition-shadow duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#7851A9] ${
-                      cardClassName ?? ''
-                    }`}
+                    className={`relative block w-full aspect-square rounded-2xl bg-white shadow-md hover:shadow-lg transition ${cardClassName ?? ''}`}
                   >
                     {content}
                   </a>
@@ -188,29 +181,25 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
               return (
                 <div
                   key={banner.id}
-                  className={`relative w-full h-48 sm:h-60 overflow-visible rounded-2xl bg-white shadow-md transition-shadow duration-300 hover:shadow-lg ${
-                    cardClassName ?? ''
-                  }`}
+                  className={`relative w-full aspect-square rounded-2xl bg-white shadow-md hover:shadow-lg transition ${cardClassName ?? ''}`}
                 >
                   {content}
                 </div>
               );
             }
 
-            // Default stacked variant
+            // === STACKED VARIANT ===
             return (
               <div
                 key={banner.id}
-                className={`flex flex-col items-center sm:items-start text-center sm:text-left rounded-2xl p-5 sm:p-6 transition-shadow duration-300 hover:shadow-xl bg-white ${
-                  cardClassName ?? ''
-                }`}
+                className={`flex flex-col items-center sm:items-start text-center sm:text-left rounded-2xl p-5 sm:p-6 transition-shadow duration-300 hover:shadow-xl bg-white ${cardClassName ?? ''}`}
               >
-                <div className="relative flex items-center justify-center w-28 h-28 sm:w-36 sm:h-36">
+                <div className="relative w-full aspect-square flex items-center justify-center">
                   {imageSrc ? (
                     <img
                       src={imageSrc}
                       alt={alt}
-                      className="max-h-full max-w-full object-contain drop-shadow-md"
+                      className="absolute inset-0 w-full h-full object-contain drop-shadow-md"
                       onError={(event) => {
                         event.currentTarget.style.display = 'none';
                         const fallback = event.currentTarget
@@ -226,9 +215,8 @@ const CategoryCardGrid: React.FC<CategoryCardGridProps> = ({
                     Image Coming Soon
                   </div>
                 </div>
-                <h3 className="mt-5 font-semibold text-lg text-gray-900">
-                  {title}
-                </h3>
+
+                <h3 className="mt-5 font-semibold text-lg text-gray-900">{title}</h3>
                 <p className="mt-2 text-sm text-gray-500">{description}</p>
                 {cta && (
                   <a
