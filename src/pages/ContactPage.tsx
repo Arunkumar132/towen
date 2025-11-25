@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Topbar from '../components/Topbar';
-import { Phone, Mail } from 'lucide-react';
+import { Phone, Mail, MessageCircle } from 'lucide-react';
 import Footer from '../components/Footer';
 import { usePlacementBanners } from '../stores/publicBannersStore';
 import { getBannerAlt, getBannerImageSrc } from '../utils/bannerUtils';
@@ -134,7 +134,7 @@ const ContactPage: React.FC = () => {
       {/* HERO */}
       <section
         ref={heroRef}
-        className="relative bg-gradient-to-r from-[#633591] via-purple-600 to-purple-700 text-white overflow-hidden mt-[4rem]"
+        className="relative bg-[#510088] text-white overflow-hidden mt-[4rem]"
       >
         {heroImageSrc && (
           <figure className="absolute inset-0">
@@ -152,35 +152,93 @@ const ContactPage: React.FC = () => {
                 }
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#633591]/85 via-purple-600/75 to-purple-700/65" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#510088]/85 via-purple-600/75 to-purple-700/65" />
           </figure>
         )}
+
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-white/5 blur-3xl animate-pulse-slow" />
           <div className="pointer-events-none absolute top-1/2 -right-32 h-80 w-80 rounded-full bg-purple-300/10 blur-3xl animate-float-gentle" />
           <div className="pointer-events-none absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-purple-400/8 blur-3xl animate-drift" />
         </div>
+
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-16 sm:py-24">
-          <div className={`text-center transition-all duration-1000 ease-out ${
-            heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
-          }`}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.28em] text-purple-100/90 backdrop-blur animate-bounce-subtle">
+          <div
+            className={`text-center transition-all duration-1000 ease-out ${heroVisible
+              ? 'opacity-100 translate-x-0'
+              : 'opacity-0 -translate-x-12'
+              }`}
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.28em] font-bold text-purple-100/90 backdrop-blur animate-bounce-subtle">
               We would love to help
             </span>
-            <h1 className={`mt-4 text-4xl sm:text-5xl font-bold leading-tight drop-shadow-lg transition-all duration-1000 delay-200 ease-out ${
-              heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
-            }`}>
+
+            <h1
+              className={`mt-4 text-4xl uppercase sm:text-5xl font-bold leading-tight drop-shadow-lg transition-all duration-1000 delay-200 ease-out ${heroVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 translate-x-12'
+                }`}
+            >
               Get in touch
             </h1>
-            <p className={`mt-3 text-purple-100 max-w-2xl mx-auto text-base sm:text-lg transition-all duration-1000 delay-300 ease-out ${
-              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
-              We usually reply within 24 hours. Share a few details and our team will reach out.
+
+            <p
+              className={`mt-3 text-purple-100 max-w-2xl mx-auto text-base sm:text-lg transition-all duration-1000 delay-300 ease-out ${heroVisible
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+                }`}
+            >
+              We usually reply within 24 hours. Share a few details and our team will
+              reach out.
             </p>
+            <div className="relative z-20 mt-10 flex justify-center gap-6">
+              {/* Phone */}
+              <a
+                href="tel:+919943677277"
+                className="p-4 rounded-full bg-white/20 border border-white/30 backdrop-blur 
+                 hover:bg-white/30 transition-all duration-200 shadow-lg"
+              >
+                <Phone className="w-6 h-6 text-white" />
+              </a>
+
+              {/* Mail */}
+              <a
+                href="mailto:tovenofficial@gmail.com"
+                className="p-4 rounded-full bg-white/20 border border-white/30 backdrop-blur 
+                 hover:bg-white/30 transition-all duration-200 shadow-lg"
+              >
+                <Mail className="w-6 h-6 text-white" />
+              </a>
+
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/919943677577"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-4 rounded-full bg-white/20 border border-white/30 backdrop-blur 
+                 hover:bg-white/30 transition-all duration-200 shadow-lg"
+              >
+                <MessageCircle className="w-6 h-6 text-white" />
+              </a>
+            </div>
           </div>
         </div>
+
+        {/* Bottom wave divider */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden -bottom-[1px]">
+          <svg
+            viewBox="0 0 1440 320"
+            preserveAspectRatio="none"
+            className="block w-full h-[90px] fill-white"
+          >
+            <path d="M0,320 V160 C360,280 1080,280 1440,160 V320 H0 Z" />
+          </svg>
+        </div>
+
       </section>
+
+
 
       {/* MAIN CONTENT */}
       <section className="py-20">
@@ -188,9 +246,8 @@ const ContactPage: React.FC = () => {
           {/* Left: Contact methods */}
           <div
             ref={infoRef}
-            className={`space-y-8 transition-all duration-700 ease-out ${
-              infoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
+            className={`space-y-8 transition-all duration-700 ease-out ${infoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
           >
             <header>
               <h2 className="text-2xl font-semibold text-slate-900">Contact information</h2>
@@ -209,6 +266,12 @@ const ContactPage: React.FC = () => {
                   description: 'tovenofficial@gmail.com',
                   icon: Mail,
                   badge: 'Drop a note',
+                },
+                {
+                  label: 'Whatsapp',
+                  description: '9943677577',
+                  icon: MessageCircle,
+                  badge: 'Chat With us',
                 },
               ].map((item) => (
                 <div
@@ -233,103 +296,130 @@ const ContactPage: React.FC = () => {
             </div>
           </div>
           {/* Right: Form */}
-          <div
-            ref={formRef}
-            className={`relative transition-all duration-700 ease-out delay-100 ${
-              formVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-          >
-            <div className="pointer-events-none absolute -inset-6 rounded-[2.25rem] bg-gradient-to-br from-purple-500/15 via-transparent to-orange-400/20 blur-3xl" />
-            <div className="relative bg-white rounded-2xl shadow-xl ring-1 ring-black/5 p-8 sm:p-10 md:p-12">
-              <h2 className="text-2xl font-semibold text-center text-slate-900">Send us a message</h2>
-              <div className="w-16 h-1 bg-purple-600 mx-auto mt-3 mb-10 rounded-full" />
-              <form className="grid gap-6" onSubmit={handleSubmit} noValidate>
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <div>
-                    <label className="sr-only" htmlFor="name">Name</label>
-                    <input
-                      id="name"
-                      type="text"
-                      placeholder="Name"
-                      value={name}
-                      onChange={(event) => {
-                        setName(event.target.value);
-                        if (formError) setFormError(null);
-                      }}
-                      className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                      disabled={creating}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="sr-only" htmlFor="email">Email</label>
-                    <input
-                      id="email"
-                      type="email"
-                      placeholder="Email"
-                      value={email}
-                      onChange={(event) => {
-                        setEmail(event.target.value);
-                        if (formError) setFormError(null);
-                      }}
-                      className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                      disabled={creating}
-                      required
-                    />
-                  </div>
-                </div>
+          <div className="relative bg-[#510088] rounded-2xl shadow-xl ring-1 ring-black/5 p-8 sm:p-10 md:p-12 text-white">
+            <h2 className="text-2xl font-semibold text-center">Send us a <span className="text-[#E6660b]">message</span></h2>
+            <img src="/nline.png" alt="Curved underline" className="mx-auto w-32 -mt-6" />
+
+
+            <form className="grid gap-6" onSubmit={handleSubmit} noValidate>
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="sr-only" htmlFor="subject">Subject</label>
+                  <label className="sr-only" htmlFor="name">Name</label>
                   <input
-                    id="subject"
+                    id="name"
                     type="text"
-                    placeholder="Subject"
-                    value={subject}
+                    placeholder="Name"
+                    value={name}
                     onChange={(event) => {
-                      setSubject(event.target.value);
+                      setName(event.target.value);
                       if (formError) setFormError(null);
                     }}
-                    className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    className="w-full border border-white/40 bg-white/10 text-white placeholder-white/70 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
                     disabled={creating}
                     required
                   />
                 </div>
+
                 <div>
-                  <label className="sr-only" htmlFor="message">Message</label>
-                  <textarea
-                    id="message"
-                    placeholder="Write your message..."
-                    rows={6}
-                    value={message}
+                  <label className="sr-only" htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    value={email}
                     onChange={(event) => {
-                      setMessage(event.target.value);
+                      setEmail(event.target.value);
                       if (formError) setFormError(null);
                     }}
-                    className="w-full border border-slate-300 rounded-md px-4 py-3 text-sm resize-y focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    className="w-full border border-white/40 bg-white/10 text-white placeholder-white/70 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
                     disabled={creating}
                     required
                   />
                 </div>
-                {formError ? (
-                  <div className="rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-600">
-                    {formError}
-                  </div>
-                ) : null}
-                {formSuccess ? (
-                  <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700">
-                    {formSuccess}
-                  </div>
-                ) : null}
-                <button
-                  type="submit"
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md py-3.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-orange-500/20"
+              </div>
+
+              <div>
+                <label className="sr-only" htmlFor="subject">Subject</label>
+                <input
+                  id="subject"
+                  type="text"
+                  placeholder="Subject"
+                  value={subject}
+                  onChange={(event) => {
+                    setSubject(event.target.value);
+                    if (formError) setFormError(null);
+                  }}
+                  className="w-full border border-white/40 bg-white/10 text-white placeholder-white/70 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
                   disabled={creating}
-                >
-                  {creating ? 'Sending…' : 'Send now'}
-                </button>
-              </form>
-            </div>
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="sr-only" htmlFor="message">Message</label>
+                <textarea
+                  id="message"
+                  placeholder="Write your message..."
+                  rows={6}
+                  value={message}
+                  onChange={(event) => {
+                    setMessage(event.target.value);
+                    if (formError) setFormError(null);
+                  }}
+                  className="w-full border border-white/40 bg-white/10 text-white placeholder-white/70 rounded-md px-4 py-3 text-sm resize-y focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
+                  disabled={creating}
+                  required
+                />
+              </div>
+
+              {formError ? (
+                <div className="rounded-md border border-red-300 bg-red-600/20 px-4 py-2 text-sm text-red-100">
+                  {formError}
+                </div>
+              ) : null}
+
+              {formSuccess ? (
+                <div className="rounded-md border border-emerald-300 bg-emerald-600/20 px-4 py-2 text-sm text-emerald-100">
+                  {formSuccess}
+                </div>
+              ) : null}
+
+              <button
+                type="submit"
+                className="w-full bg-[#E6660b] text-white hover:bg-gray-100 font-semibold rounded-md py-3.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-70 shadow-lg"
+                disabled={creating}
+              >
+                {creating ? 'Sending…' : 'Send now'}
+              </button>
+            </form>
           </div>
+        </div>
+      </section>
+
+      <section className="py-2 bg-[#f7f7f7]">
+        <div className="max-w-4xl mx-auto px-6 text-left">
+
+          {/* Main heading */}
+          <h2 className="text-5xl sm:text-6xl font-extrabold text-gray-400 leading-tight">
+            Live <br />
+            it up!
+          </h2>
+
+          {/* Subtitle */}
+          <p className="mt-6 text-gray-500 text-lg flex items-center gap-2">
+            Crafted with
+            <span className="text-red-500 text-xl">❤️</span>
+            in Coimbatore, India
+          </p>
+
+          {/* Back to top button */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="mt-10 inline-flex items-center gap-2 bg-[#111] text-white px-5 py-2 rounded-full shadow-md hover:bg-black transition"
+          >
+            <span className="text-sm">↑ Back to top</span>
+          </button>
+
         </div>
       </section>
 

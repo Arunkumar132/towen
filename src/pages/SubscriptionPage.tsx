@@ -1,279 +1,286 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import Topbar from '../components/Topbar';
-import Footer from '../components/Footer';
-import { useCategoriesStore } from '../stores/categoriesStore';
-import { useNavigate } from 'react-router-dom';
-import { useUserRoleStore } from '../stores/userRoleStore';
-import { useLoginModalStore } from '../stores/loginModalStore';
-import { usePlacementBanners } from '../stores/publicBannersStore';
-import { getBannerAlt, getBannerImageSrc } from '../utils/bannerUtils';
-import { Truck } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Topbar from "../components/Topbar";
+import Footer from "../components/Footer";
+import { useCategoriesStore } from "../stores/categoriesStore";
+import { useNavigate } from "react-router-dom";
+import { useUserRoleStore } from "../stores/userRoleStore";
+import { useLoginModalStore } from "../stores/loginModalStore";
+import { usePlacementBanners } from "../stores/publicBannersStore";
+import { getBannerAlt, getBannerImageSrc } from "../utils/bannerUtils";
+import { Truck, X } from "lucide-react";
 
-type SubscriptionCard = {
-  id: string;
-  title: string;
-  description: string | null;
-  priceLine: string | null;
-  image: string | null;
-  accentColor: string;
-  gradient: string;
-};
+// ---------------------------------------------------------
+// Page Component
+// ---------------------------------------------------------
+export default function SubscriptionPage() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [pincode, setPincode] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean | null>(null);
 
-const DEFAULT_ACCENT_FROM = '#8B5CF6';
-const DEFAULT_ACCENT_TO = '#6366F1';
-const DEFAULT_ACCENT_COLOR = DEFAULT_ACCENT_TO;
-const DEFAULT_GRADIENT = `linear-gradient(135deg, ${DEFAULT_ACCENT_FROM}, ${DEFAULT_ACCENT_TO})`;
+  // Future-proof list
+  const serviceablePincodes = ["641004"];
 
-const HEX_COLOR_REGEX = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+  const handleCheck = () => {
+    if (!pincode.trim()) return;
 
-const normalizeHex = (value?: string | null): string | null => {
-  if (typeof value !== 'string') {
+    if (serviceablePincodes.includes(pincode.trim())) {
+      setSuccess(true);
+      setMessage("Delivery is available for your location!");
+    } else {
+      setSuccess(false);
+      setMessage("Sorry, delivery is not available for this pincode.");
+    }
+  };
+
+  // Utility constants
+  const DEFAULT_ACCENT_FROM = "#8B5CF6";
+  const DEFAULT_ACCENT_TO = "#6366F1";
+  const DEFAULT_GRADIENT = `linear-gradient(135deg, ${DEFAULT_ACCENT_FROM}, ${DEFAULT_ACCENT_TO})`;
+
+  const HEX_COLOR_REGEX = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+
+  const normalizeHex = (value?: string | null): string | null => {
+    if (!value) return null;
+    const trimmed = value.trim();
+    return HEX_COLOR_REGEX.test(trimmed) ? trimmed : null;
+  };
+
+  const hexToRgba = (color: string | null | undefined, alpha: number): string | null => {
+    if (!color) return null;
+    let normalized = color.replace("#", "");
+    if (normalized.length === 3) {
+      normalized = normalized.split("").map((c) => c + c).join("");
+    }
+    if (normalized.length !== 6) return null;
+
+    const red = parseInt(normalized.slice(0, 2), 16);
+    const green = parseInt(normalized.slice(2, 4), 16);
+    const blue = parseInt(normalized.slice(4, 6), 16);
+
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+  };
+
+  const buildGradient = (from?: string | null, to?: string | null): string => {
+    const f = normalizeHex(from);
+    const t = normalizeHex(to);
+
+    if (f && t) return `linear-gradient(135deg, ${f}, ${t})`;
+    if (f) return `linear-gradient(135deg, ${hexToRgba(f, 0.12)}, ${hexToRgba(f, 0.45)})`;
+    if (t) return `linear-gradient(135deg, ${hexToRgba(t, 0.12)}, ${hexToRgba(t, 0.45)})`;
+
+    return DEFAULT_GRADIENT;
+  };
+
+  const sanitizeDescription = (value?: string | null): string | null => {
+    if (!value) return null;
+    const t = value.trim();
+    return t.length > 0 ? t : null;
+  };
+
+  const formatPriceLine = (price?: number | null): string | null => {
+    if (typeof price === "number" && price > 0) {
+      return `₹${price.toLocaleString("en-IN")} / meal`;
+    }
     return null;
-  }
-  const trimmed = value.trim();
-  if (!trimmed) {
-    return null;
-  }
-  return HEX_COLOR_REGEX.test(trimmed) ? trimmed : null;
-};
+  };
 
-const hexToRgba = (color: string | null | undefined, alpha: number): string | null => {
-  if (typeof color !== 'string') {
-    return null;
-  }
-  let normalized = color.trim();
-  if (!normalized) {
-    return null;
-  }
-  if (normalized.startsWith('#')) {
-    normalized = normalized.slice(1);
-  }
-  if (normalized.length === 3) {
-    normalized = normalized
-      .split('')
-      .map((char) => char + char)
-      .join('');
-  }
-  if (normalized.length !== 6) {
-    return null;
-  }
-  const red = parseInt(normalized.slice(0, 2), 16);
-  const green = parseInt(normalized.slice(2, 4), 16);
-  const blue = parseInt(normalized.slice(4, 6), 16);
-  if ([red, green, blue].some((channel) => Number.isNaN(channel))) {
-    return null;
-  }
-  const clampedAlpha = Math.max(0, Math.min(1, alpha));
-  return `rgba(${red}, ${green}, ${blue}, ${clampedAlpha.toFixed(2)})`;
-};
-
-const buildGradient = (accentFrom?: string | null, accentTo?: string | null): string => {
-  const normalizedFrom = normalizeHex(accentFrom);
-  const normalizedTo = normalizeHex(accentTo);
-
-  if (normalizedFrom && normalizedTo) {
-    return `linear-gradient(135deg, ${normalizedFrom}, ${normalizedTo})`;
-  }
-
-  if (normalizedFrom) {
-    const start = hexToRgba(normalizedFrom, 0.12) ?? normalizedFrom;
-    const end = hexToRgba(normalizedFrom, 0.45) ?? normalizedFrom;
-    return `linear-gradient(135deg, ${start}, ${end})`;
-  }
-
-  if (normalizedTo) {
-    const start = hexToRgba(normalizedTo, 0.12) ?? normalizedTo;
-    const end = hexToRgba(normalizedTo, 0.45) ?? normalizedTo;
-    return `linear-gradient(135deg, ${start}, ${end})`;
-  }
-
-  return DEFAULT_GRADIENT;
-};
-
-const formatPriceLine = (price?: number | null): string | null => {
-  if (typeof price === 'number' && Number.isFinite(price) && price > 0) {
-    return `₹${price.toLocaleString('en-IN')} / meal`;
-  }
-  return null;
-};
-
-const sanitizeDescription = (value?: string | null): string | null => {
-  if (typeof value !== 'string') {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-};
-
-const SubscriptionPage: React.FC = () => {
+  // Stores
   const categories = useCategoriesStore((state) => state.categories);
   const loading = useCategoriesStore((state) => state.loading);
   const loadCategories = useCategoriesStore((state) => state.loadCategories);
+
   const user = useUserRoleStore((state) => state.user);
   const openLoginModal = useLoginModalStore((state) => state.open);
+
   const navigate = useNavigate();
-  const { banners: subscriptionBanners } = usePlacementBanners('subscription');
+  const { banners: subscriptionBanners } = usePlacementBanners("subscription");
+
   const subscriptionHero = subscriptionBanners[0];
   const subscriptionHeroSrc = getBannerImageSrc(subscriptionHero);
-  const subscriptionHeroAlt = getBannerAlt(subscriptionHero, 'Subscription hero banner');
+  const subscriptionHeroAlt = getBannerAlt(subscriptionHero, "Subscription banner");
 
   useEffect(() => {
     if (!categories.length) {
-      void loadCategories();
+      loadCategories();
     }
   }, [categories.length, loadCategories]);
 
-  const cards = useMemo<SubscriptionCard[]>(() => {
-    if (!categories.length) {
-      return [];
-    }
-
+  const cards = useMemo(() => {
     return categories
-      .filter((category) => category.status === 'Available')
+      .filter((c) => c.status === "Available")
       .map((category) => {
-        const accentFrom = normalizeHex(category.accentFrom);
-        const accentTo = normalizeHex(category.accentTo);
-        const accentColor = accentTo ?? accentFrom ?? DEFAULT_ACCENT_COLOR;
-
         return {
           id: category.id,
           title: category.name,
           description: sanitizeDescription(category.description),
           priceLine: formatPriceLine(category.price),
           image: category.imageBase64 ?? null,
-          accentColor,
           gradient: buildGradient(category.accentFrom, category.accentTo),
         };
       });
   }, [categories]);
 
-  const handleOrderNow = useCallback((categoryId: string) => {
-    const targetPath = `/subscription/checkout/${categoryId}`;
-    if (user) {
-      navigate(targetPath, { state: { fromSubscription: true } });
-      return;
-    }
+  const handleOrderNow = useCallback(
+    (categoryId: string) => {
+      const target = `/subscription/checkout/${categoryId}`;
+      if (user) {
+        navigate(target, { state: { fromSubscription: true } });
+      } else {
+        openLoginModal(target);
+      }
+    },
+    [navigate, openLoginModal, user]
+  );
 
-    openLoginModal(targetPath);
-  }, [navigate, openLoginModal, user]);
+  // ---------------------------------------------------------
+  // RENDER
+  // ---------------------------------------------------------
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Topbar active="Subscription" />
+
       <main className="flex-1 w-full">
         <section className="mt-20 max-w-7xl mx-auto px-6 lg:px-10 w-full">
-  {subscriptionHeroSrc && (
-    <div className="relative rounded-[2rem] overflow-hidden bg-white">
-      <img
-        src={subscriptionHeroSrc}
-        alt={subscriptionHeroAlt}
-        className="w-full h-64 sm:h-80 md:h-[520px] lg:h-[680px] object-cover"
-        onError={(event) => {
-          const target = event.currentTarget as HTMLImageElement;
-          target.style.display = 'none';
-          const container = target.closest('div');
-          if (container) {
-            (container as HTMLElement).style.display = 'none';
-          }
-        }}
-      />
-    </div>
-  )}
+          {subscriptionHeroSrc && (
+            <div className="relative rounded-[2rem] overflow-hidden bg-white">
+              <img
+                src={subscriptionHeroSrc}
+                alt={subscriptionHeroAlt}
+                className="w-full h-64 sm:h-80 md:h-[520px] lg:h-[680px] object-cover"
+              />
+            </div>
+          )}
 
-  {/* Button below the banner */}
-<div className="mt-6 flex justify-center">
-  <button
-    className="rounded-full px-6 py-3 text-sm font-semibold text-white flex items-center gap-2 transition-all duration-200 ease-in-out
-               hover:bg-[#4B246E] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5A2D82]"
-    style={{ backgroundColor: '#5A2D82' }}
-    onClick={() => {
-      navigate('/check-delivery');
-    }}
-  >
-    <Truck className="w-4 h-4" />
-    Check Delivery Location
-  </button>
-</div>
+          {/* Button */}
+          <div className="mt-6 flex justify-center">
+            <button
+              className="rounded-full px-6 py-3 text-sm font-semibold text-white flex items-center gap-2 transition hover:bg-[#4B246E]"
+              style={{ backgroundColor: "#5A2D82" }}
+              onClick={() => setIsOpen(true)}
+            >
+              <Truck className="w-4 h-4" />
+              Check Delivery Location
+            </button>
+          </div>
 
+          {/* Popup Modal */}
+          {isOpen && (
+            <div
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={() => setIsOpen(false)}
+            >
+              <div
+                className="bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-xl relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <X className="w-5 h-5" />
+                </button>
 
-</section>
+                <h2 className="text-lg font-semibold text-center text-[#5A2D82]">
+                  Check Delivery Availability
+                </h2>
 
+                <input
+                  type="text"
+                  placeholder="Enter Pincode"
+                  value={pincode}
+                  onChange={(e) => {
+                    setPincode(e.target.value);
+                    setMessage(null);
+                  }}
+                  className="mt-5 w-full border rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-[#5A2D82]"
+                />
 
-        
+                <button
+                  onClick={handleCheck}
+                  className="mt-4 w-full bg-[#5A2D82] text-white font-semibold rounded-md py-2 text-sm hover:bg-[#4B246E]"
+                >
+                  Check
+                </button>
 
-        <section className="max-w-6xl w-full mx-auto px-6 lg:px-10 py-10 lg:py-20">
-          <div className="mb-10 flex flex-col gap-3 text-center">
-            <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Pick a subscription that suits your rhythm</h2>
+                {message && (
+                  <p
+                    className={`mt-4 text-center text-sm font-medium ${
+                      success ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {message}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* Subscription Cards */}
+        <section className="max-w-6xl mx-auto px-6 lg:px-10 py-10 lg:py-20">
+          <div className="mb-10 text-center">
+            <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Pick a subscription that suits your rhythm
+            </h2>
             <p className="text-sm text-slate-500 sm:text-base">
-              Fresh menus every week, curated by chefs and nutritionists. Cancel or pause in a tap.
+              Fresh menus every week, curated by chefs and nutritionists. Cancel or pause easily.
             </p>
           </div>
 
           {loading && cards.length === 0 && (
-            <p className="mb-8 text-center text-sm font-medium text-slate-400">Loading live categories…</p>
+            <p className="text-center text-sm text-slate-400">Loading categories…</p>
           )}
 
           {!loading && cards.length === 0 && (
-            <p className="mb-8 text-center text-sm font-medium text-slate-400">
-              No subscription categories are available yet.
-            </p>
+            <p className="text-center text-sm text-slate-400">No categories available.</p>
           )}
 
           <div className="grid gap-8 lg:gap-10">
-            {cards.map((card) => {
-              return (
-                <article
-                  key={card.id}
-                  className="grid gap-6 rounded-3xl bg-gradient-to-r p-6 sm:p-8 lg:p-10 shadow-none sm:grid-cols-[minmax(0,1fr)_minmax(200px,320px)]"
-                  style={{ backgroundImage: card.gradient }}
-                >
+            {cards.map((card) => (
+              <article
+                key={card.id}
+                className="grid gap-6 rounded-3xl p-6 sm:p-8 lg:p-10 sm:grid-cols-[1fr_320px]"
+                style={{ backgroundImage: card.gradient }}
+              >
                 <div className="flex flex-col gap-5">
-                  <div>
-                      {card.priceLine && (
-                        <span
-                          className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-700"
-                        >
-                          {card.priceLine}
-                        </span>
-                      )}
-                    <h3 className="mt-4 text-2xl font-bold text-slate-900 sm:text-3xl">{card.title}</h3>
-                      {card.description && (
-                        <p className="mt-3 text-sm text-slate-600 sm:text-base">
-                          {card.description}
-                        </p>
-                      )}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <button
-                      className="rounded-full bg-slate-900 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-white"
-                      onClick={() => handleOrderNow(card.id)}
-                    >
-                      Order Now
-                    </button>
-                  </div>
+                  {card.priceLine && (
+                    <span className="inline-flex bg-white/70 px-3 py-1 rounded-full text-[11px] font-semibold">
+                      {card.priceLine}
+                    </span>
+                  )}
+
+                  <h3 className="text-2xl sm:text-3xl font-bold">{card.title}</h3>
+
+                  {card.description && (
+                    <p className="text-sm sm:text-base">{card.description}</p>
+                  )}
+
+                  <button
+                    onClick={() => handleOrderNow(card.id)}
+                    className="rounded-full bg-slate-900 px-5 py-2 text-xs text-white font-semibold hover:bg-slate-800"
+                  >
+                    Order Now
+                  </button>
                 </div>
-                <div className="relative h-52 overflow-hidden rounded-2xl bg-white/70 sm:h-full sm:min-h-[280px]">
+
+                <div className="relative h-52 rounded-2xl overflow-hidden bg-white/70 sm:h-full">
                   {card.image ? (
-                    <img
-                      src={card.image}
-                      alt={card.title}
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
+                    <img src={card.image} className="absolute inset-0 w-full h-full object-cover" />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center bg-white/40 text-xs font-medium uppercase tracking-wide text-slate-400">
+                    <div className="flex items-center justify-center h-full text-xs text-slate-400">
                       Image not provided
                     </div>
                   )}
                 </div>
-                </article>
-              );
-            })}
+              </article>
+            ))}
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   );
-};
-
-export default SubscriptionPage;
+}

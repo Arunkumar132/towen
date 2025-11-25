@@ -403,10 +403,10 @@ const LandingPage: React.FC = () => {
               <div className="animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
                 <RotatingWord />
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mt-4 mb-6 animate-fade-in-up" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+              <h1 className="text-xl sm:text-4xl lg:text-6xl font-bold leading-tight mt-4 mb-6 animate-fade-in-up" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 Beyond Every Bite
               </h1>
-              <p className="text-base sm:text-lg text-purple-100 max-w-md animate-fade-in-up" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
+              <p className="text-base sm:text-medium text-purple-100 max-w-md animate-fade-in-up" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
                 Customized to your taste, schedule, and lifestyle.
               </p>
               {/* Inline category cards row (max 4) */}
