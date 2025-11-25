@@ -22,17 +22,13 @@ const ContactPage: React.FC = () => {
   const [formSuccess, setFormSuccess] = useState<string | null>(null);
   const [heroVisible, setHeroVisible] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
-  const [formVisible, setFormVisible] = useState(false);
-
   const heroRef = useRef<HTMLDivElement | null>(null);
   const infoRef = useRef<HTMLDivElement | null>(null);
-  const formRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const revealTargets: Array<{ element: HTMLElement | null; onVisible: () => void }> = [
       { element: heroRef.current, onVisible: () => setHeroVisible(true) },
       { element: infoRef.current, onVisible: () => setInfoVisible(true) },
-      { element: formRef.current, onVisible: () => setFormVisible(true) },
     ];
 
     const observer = new IntersectionObserver(
@@ -47,10 +43,6 @@ const ContactPage: React.FC = () => {
           }
           if (entry.target === infoRef.current) {
             setInfoVisible(true);
-            observer.unobserve(entry.target);
-          }
-          if (entry.target === formRef.current) {
-            setFormVisible(true);
             observer.unobserve(entry.target);
           }
         });

@@ -85,7 +85,7 @@ const AddonsPage: React.FC = () => {
   const [isCutoffPassed, setIsCutoffPassed] = useState(() => computeIsCutoffPassed());
   const [searchTerm, setSearchTerm] = useState('');
   const [mealTypeFilter, setMealTypeFilter] = useState<'all' | MealType>('all');
-  const [categoryFilter, setCategoryFilter] = useState<'all' | FoodCategory>('all');
+  const [categoryFilter] = useState<'all' | FoodCategory>('all');
 
   const addonCutoffTimeLabel = useMemo(() => {
     const period = addonCutoffHour >= 12 ? 'PM' : 'AM';
@@ -187,7 +187,7 @@ const AddonsPage: React.FC = () => {
     categorizedAddons.forEach((entry) => {
       const filteredByChoices = entry.addons.filter((addon) => {
         const matchesMeal = mealTypeFilter === 'all' || addon.mealType === mealTypeFilter;
-        const matchesCategory = categoryFilter === 'all' || addon.category === categoryFilter;
+        const matchesCategory = isVeg ? addon.category === 'Veg' : addon.category === 'Non-Veg';
         return matchesMeal && matchesCategory;
       });
 
@@ -220,7 +220,7 @@ const AddonsPage: React.FC = () => {
     });
 
     return results;
-  }, [categorizedAddons, categoryFilter, mealTypeFilter, searchTerm]);
+  }, [categorizedAddons, isVeg, mealTypeFilter, searchTerm]);
 
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
