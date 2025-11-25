@@ -4,7 +4,6 @@ import Footer from '../components/Footer';
 import Topbar from '../components/Topbar';
 import { usePlacementBanners } from '../stores/publicBannersStore';
 import { getBannerAlt, getBannerImageSrc } from '../utils/bannerUtils';
-import CategoryCardGrid from '../components/CategoryCardGrid';
 import AboutUsCards from '../components/AboutUsCards';
 import {
   CalendarClock,
