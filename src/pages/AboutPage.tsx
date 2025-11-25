@@ -321,6 +321,8 @@ const AboutPage: React.FC = () => {
               </div>
             </div>
             <h3 className="text-xl font-semibold mb-4">Our Vision</h3>
+            <img src="/nline.png" alt="Curved underline" className="mx-auto w-32 -mt-10" />
+
             <p className="leading-relaxed text-sm">
               To become India’s most trusted and loved homely food ecosystem,
               delivering healthy, affordable, and customized meals to every
@@ -341,6 +343,8 @@ const AboutPage: React.FC = () => {
               </div>
             </div>
             <h3 className="text-xl font-semibold mb-4">Our Mission</h3>
+            <img src="/nline.png" alt="Curved underline" className="mx-auto w-32 -mt-10" />
+
             <p className="leading-relaxed text-sm">
               To simplify daily eating with fresh, homely meals through
               a smart pre-order system — offering flexible plans, premium

@@ -120,6 +120,8 @@ const AddonsPage: React.FC = () => {
     };
   }, [computeIsCutoffPassed]);
 
+  const [isVeg, setIsVeg] = useState(true);
+
   const initialAddonCategoriesLoadRef = useRef(false);
   useEffect(() => {
     if (initialAddonCategoriesLoadRef.current) {
@@ -297,7 +299,7 @@ const AddonsPage: React.FC = () => {
       coins: selectedAddon.coins ?? 0,
       discountCoins: selectedAddon.discountCoins ?? 0,
       image: selectedAddon.imageBase64 ?? null,
-  deliveryDate: getAddonDeliveryDateKey(new Date(), { cutoffHour: addonCutoffHour }),
+      deliveryDate: getAddonDeliveryDateKey(new Date(), { cutoffHour: addonCutoffHour }),
     };
 
     if (!user) {
@@ -341,7 +343,7 @@ const AddonsPage: React.FC = () => {
       <main className="flex-1 w-full">
         <section className="mt-20 max-w-7xl mx-auto px-6 lg:px-10 w-full">
           {addonHeroSrc ? (
-            <div className="rounded overflow-hidden shadow-lg relative bg-black">
+            <div className="rounded-3xl overflow-hidden shadow-lg relative bg-black">
               <img
                 src={addonHeroSrc}
                 alt={addonHeroAlt}
@@ -359,14 +361,37 @@ const AddonsPage: React.FC = () => {
           ) : null}
         </section>
 
+
         <section className="max-w-6xl w-full mx-auto px-6 lg:px-10 py-16 lg:py-20">
-          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex flex-col gap-3 sm:max-w-xl">
-              <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Pick the add-ons that match your vibe</h2>
-              <p className="text-sm text-slate-500 sm:text-base">
-                Curations change every week so your cravings never get bored. Pause, swap, or double up on the fly.
-              </p>
+          <div className="w-full flex items-center gap-3 py-4 px-2">
+            {/* Back Button */}
+            <button
+              onClick={() => navigate(-1)}
+              className="w-9 h-9 rounded-lg bg-[#510088] flex items-center justify-center text-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            {/* Text */}
+            <div className="flex flex-col">
+              <span className="font-bold text-base">
+                CHOOSE YOUR <span className="text-[#510088]">MEAL TIME AND COMBO</span>
+              </span>
+              <span className="text-slate-500 text-sm">
+                Pick your customized combo with meal time
+              </span>
             </div>
+          </div>
+          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex flex-col gap-4 sm:max-w-sm w-full">
               <div className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -379,46 +404,62 @@ const AddonsPage: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <div className="flex flex-col gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Meal time</span>
-                  <div className="flex flex-wrap gap-2">
-                    {MEAL_TYPE_FILTERS.map((option) => {
-                      const isActive = mealTypeFilter === option.value;
-                      return (
-                        <button
-                          key={option.value}
-                          type="button"
-                          onClick={() => setMealTypeFilter(option.value)}
-                          className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide transition ${isActive
-                              ? 'border-slate-900 bg-slate-900 text-white shadow-sm'
-                              : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
-                            }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
+                <div className="flex flex-col gap-2 w-full">
+                  {/* Outer bordered container */}
+                  <div className="border border-[#510088] rounded-4xl p-1 bg-white">
+                    <div className="flex items-center gap-2 rounded-full p-1">
+                      {MEAL_TYPE_FILTERS.map((option) => {
+                        const isActive = mealTypeFilter === option.value;
+
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => setMealTypeFilter(option.value)}
+                            className={`
+              flex-1 px-4 py-2 text-sm font-medium rounded-full transition
+              ${isActive
+                                ? 'bg-[#510088] text-white shadow'
+                                : 'text-slate-700'}
+            `}
+                          >
+                            {option.label}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
+
+
+
                 <div className="flex flex-col gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Diet preference</span>
-                  <div className="flex flex-wrap gap-2">
-                    {CATEGORY_FILTERS.map((option) => {
-                      const isActive = categoryFilter === option.value;
-                      return (
-                        <button
-                          key={option.value}
-                          type="button"
-                          onClick={() => setCategoryFilter(option.value)}
-                          className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide transition ${isActive
-                              ? 'border-slate-900 bg-slate-900 text-white shadow-sm'
-                              : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
-                            }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
+                  <div className="flex items-center gap-4">
+                    {/* Left label */}
+                    <span className={`font-semibold ${isVeg ? "text-[#510088]" : "text-slate-700"}`}>
+                      Veg
+                    </span>
+                    {/* Toggle container */}
+                    <div
+                      onClick={() => setIsVeg(!isVeg)}
+                      className={`
+            relative w-15 h-9 rounded-full cursor-pointer transition-all
+            ${isVeg ? "bg-white border border-[#510088]" : "bg-[#510088]"}
+          `}
+                    >
+                      {/* Sliding Knob */}
+                      <div
+                        className={`
+              absolute top-1 left-1 w-7 h-7 rounded-full bg-orange-500 
+              transition-all duration-300
+              ${isVeg ? "translate-x-0" : "translate-x-6"}
+            `}
+                      ></div>
+                    </div>
+                    {/* Right label */}
+                    <span className={`font-semibold ${!isVeg ? "text-[#510088]" : "text-slate-700"}`}>
+                      Non-Veg
+                    </span>
                   </div>
                 </div>
               </div>
