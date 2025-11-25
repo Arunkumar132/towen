@@ -19,7 +19,7 @@ import { resolveCutoffHour } from '../utils/timeWindow';
 import { useConfigStore } from '../stores/configStore';
 import { usePlacementBanners } from '../stores/publicBannersStore';
 import { getBannerAlt, getBannerImageSrc } from '../utils/bannerUtils';
-import type { FoodCategory, MealType } from '../schemas/FoodItemSchema';
+import type { MealType } from '../schemas/FoodItemSchema';
 import { Search, ShoppingCart } from 'lucide-react';
 
 const GRADIENT_PALETTE = [
@@ -40,11 +40,6 @@ const MEAL_TYPE_FILTERS: Array<{ value: 'all' | MealType; label: string }> = [
   { value: 'Dinner', label: 'Dinner' },
 ];
 
-const CATEGORY_FILTERS: Array<{ value: 'all' | FoodCategory; label: string }> = [
-  { value: 'all', label: 'All types' },
-  { value: 'Veg', label: 'Veg' },
-  { value: 'Non-Veg', label: 'Non-Veg' },
-];
 
 const AddonsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -85,7 +80,6 @@ const AddonsPage: React.FC = () => {
   const [isCutoffPassed, setIsCutoffPassed] = useState(() => computeIsCutoffPassed());
   const [searchTerm, setSearchTerm] = useState('');
   const [mealTypeFilter, setMealTypeFilter] = useState<'all' | MealType>('all');
-  const [categoryFilter] = useState<'all' | FoodCategory>('all');
 
   const addonCutoffTimeLabel = useMemo(() => {
     const period = addonCutoffHour >= 12 ? 'PM' : 'AM';
