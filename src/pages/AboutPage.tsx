@@ -258,17 +258,18 @@ const AboutPage: React.FC = () => {
           </p>
           {/* ⭐ TOVEN IS FOR — #510088 ACCENTED & CENTERED BOXES ⭐ */}
           <div
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-[-49px] animate-fade-in"
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-[-29px] animate-fade-in"
             data-animate
             style={{ animationDelay: "0.3s", animationFillMode: "both" }}
           >
-            <p
-              className="text-gray-600 leading-relaxed max-w-3xl mx-auto mt-4 animate-slide-in-left"
+            <h2
+              className="font-semibold text-2xl sm:text-3xl mb-4 text-center animate-zoom-in"
               data-animate
-              style={{ animationDelay: "0.22s", animationFillMode: "both" }}
+              style={{ animationDelay: "0.1s", animationFillMode: "both" }}
             >
-              Toven is For
-            </p>
+              <span className="text-[#510088]">Toven</span> is for
+            </h2>
+            <img src="/line.png" alt="Curved underline" className="mx-auto w-32 -mt-17" />
             <div className="rounded-xl border border-[#510088]/30 bg-[#510088]/5 p-6 shadow-sm hover:shadow-md transition-all duration-300 text-center">
               <h3 className="font-medium text-[#510088] text-base">
                 Students away from home
@@ -333,7 +334,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* MISSION */}
-      <section className="py-1 bg-[#F7F7F7] min-h-screen">
+      <section className="py-1 bg-[#F7F7F7] min-h-[100svh]">
         <div className="max-w-4xl mx-auto px-6 lg:px-10">
           <div className="bg-[#510088] rounded-3xl text-white p-10 flex flex-col items-center text-center">
             <div className="flex justify-center mb-4">

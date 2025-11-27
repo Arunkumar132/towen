@@ -242,9 +242,14 @@ const ContactPage: React.FC = () => {
               }`}
           >
             <header>
-              <h2 className="text-2xl font-semibold text-slate-900">Contact information</h2>
-              <p className="mt-2 text-sm text-slate-600">Get in touch with us for any inquiries or support.</p>
+              <h2 className="text-2xl font-semibold text-slate-900">
+                Contact information
+              </h2>
+              <p className="mt-2 text-sm text-slate-600">
+                Get in touch with us for any inquiries or support.
+              </p>
             </header>
+
             <div className="grid gap-6 lg:grid-cols-2">
               {[
                 {
@@ -252,41 +257,52 @@ const ContactPage: React.FC = () => {
                   description: '9943677277, 9943677577',
                   icon: Phone,
                   badge: 'Talk to us',
+                  link: 'tel:9943677277',
                 },
                 {
                   label: 'Email',
                   description: 'tovenofficial@gmail.com',
                   icon: Mail,
                   badge: 'Drop a note',
+                  link: 'mailto:tovenofficial@gmail.com',
                 },
                 {
-                  label: 'Whatsapp',
+                  label: 'WhatsApp',
                   description: '9943677577',
                   icon: MessageCircle,
-                  badge: 'Chat With us',
+                  badge: 'Chat with us',
+                  link: 'https://wa.me/919943677577',
                 },
               ].map((item) => (
-                <div
+                <a
                   key={item.label}
-                  className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-transform duration-500 hover:scale-105 hover:shadow-xl"
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative block overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-500 hover:scale-105 hover:shadow-xl cursor-pointer"
                 >
                   <div className="absolute inset-px rounded-[13px] bg-gradient-to-br from-purple-50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
                   <div className="relative flex items-center gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-700 flex-shrink-0 shadow-inner">
                       <item.icon className="h-5 w-5" />
                     </div>
+
                     <div className="space-y-1">
                       <span className="inline-flex items-center gap-1 rounded-full bg-purple-100/60 px-3 py-0.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-purple-700">
                         {item.badge}
                       </span>
-                      <h3 className="text-sm font-semibold text-slate-900">{item.label}</h3>
+                      <h3 className="text-sm font-semibold text-slate-900">
+                        {item.label}
+                      </h3>
                       <p className="text-sm text-slate-600">{item.description}</p>
                     </div>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </div>
+
           {/* Right: Form */}
           <div className="relative bg-[#510088] rounded-2xl shadow-xl ring-1 ring-black/5 p-8 sm:p-10 md:p-12 text-white">
             <h2 className="text-2xl font-semibold text-center">Send us a <span className="text-[#E6660b]">message</span></h2>
