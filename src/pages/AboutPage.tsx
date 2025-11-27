@@ -258,7 +258,7 @@ const AboutPage: React.FC = () => {
           </p>
           {/* ⭐ TOVEN IS FOR — #510088 ACCENTED & CENTERED BOXES ⭐ */}
           <div
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-[-29px] animate-fade-in"
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-[-31px] animate-fade-in"
             data-animate
             style={{ animationDelay: "0.3s", animationFillMode: "both" }}
           >
