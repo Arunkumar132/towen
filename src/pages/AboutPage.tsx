@@ -310,11 +310,11 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-
-      {/* VISION */}
-      <section className="py-1 bg-[#F7F7F7] -mt-12">
-        <div className="max-w-4xl mx-auto px-6 lg:px-10">
-          <div className="bg-[#510088] rounded-3xl text-white p-10 flex flex-col items-center text-center">
+      {/* VISION & MISSION */}
+      <section className="py-16 md:py-20 bg-[#F7F7F7]">
+        <div className="max-w-4xl mx-auto px-6 lg:px-10 space-y-8 md:space-y-12">
+          {/* Vision Card */}
+          <div className="bg-[#510088] rounded-3xl text-white p-6 sm:p-8 md:p-10 flex flex-col items-center text-center shadow-xl">
             <div className="flex justify-center mb-4">
               <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
                 <Sparkles className="h-7 w-7" />
@@ -323,20 +323,16 @@ const AboutPage: React.FC = () => {
             <h3 className="text-xl font-semibold mb-4">Our Vision</h3>
             <img src="/nline.png" alt="Curved underline" className="mx-auto w-32 -mt-10" />
 
-            <p className="leading-relaxed text-sm">
-              To become India’s most trusted and loved homely food ecosystem,
+            <p className="leading-relaxed text-sm md:text-base mt-2">
+              To become India's most trusted and loved homely food ecosystem,
               delivering healthy, affordable, and customized meals to every
               individual, while redefining how modern India experiences
               everyday food.
             </p>
           </div>
-        </div>
-      </section>
 
-      {/* MISSION */}
-      <section className="py-1 bg-[#F7F7F7] min-h-[100svh]">
-        <div className="max-w-4xl mx-auto px-6 lg:px-10">
-          <div className="bg-[#510088] rounded-3xl text-white p-10 flex flex-col items-center text-center">
+          {/* Mission Card */}
+          <div className="bg-[#510088] rounded-3xl text-white p-6 sm:p-8 md:p-10 flex flex-col items-center text-center shadow-xl">
             <div className="flex justify-center mb-4">
               <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
                 <ChefHat className="h-7 w-7" />
@@ -345,7 +341,7 @@ const AboutPage: React.FC = () => {
             <h3 className="text-xl font-semibold mb-4">Our Mission</h3>
             <img src="/nline.png" alt="Curved underline" className="mx-auto w-32 -mt-10" />
 
-            <p className="leading-relaxed text-sm">
+            <p className="leading-relaxed text-sm md:text-base mt-2">
               To simplify daily eating with fresh, homely meals through
               a smart pre-order system — offering flexible plans, premium
               packaging, on-time delivery, and personalized choices for
@@ -357,7 +353,7 @@ const AboutPage: React.FC = () => {
 
 
       {/* WHAT MAKES US DIFFERENT */}
-      <section className="relative py-24 bg-white -mt-130 overflow-hidden">
+      <section className="relative py-24 bg-white -mt-12 overflow-hidden">
         <div className="absolute inset-x-0 top-16 -z-10 mx-auto h-[520px] w-[520px] rounded-full bg-purple-100/35 blur-3xl" aria-hidden="true" />
         <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
           <div className="grid gap-12 lg:grid-cols-[1.05fr,1fr] items-start">
