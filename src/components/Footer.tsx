@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Youtube } from 'lucide-react';
+import { Instagram, Facebook, Youtube, X } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -17,9 +17,10 @@ const Footer: React.FC = () => {
         <div>
           <h4 className="font-semibold text-white mb-3 relative after:block after:h-0.5 after:w-10 after:bg-[#5A2D82] after:mt-2">Follow Us</h4>
           <div className="flex space-x-4">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><Instagram size={20} /></a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><Facebook size={20} /></a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="YouTube"><Youtube size={20} /></a>
+            <a href="https://www.instagram.com/toven_daily?utm_source=qr&igsh=MXBrZXc3dTlub2JtMA==" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><Instagram size={20} /></a>
+            <a href="https://www.facebook.com/share/1ACc6qLo5A/" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><Facebook size={20} /></a>
+            <a href="https://youtube.com/@toven_daily?si=RJYfNmV0o3KnKrha" className="text-gray-400 hover:text-white transition-colors" aria-label="YouTube"><Youtube size={20} /></a>
+            <a href="https://x.com/toven_daily?t=xepbvHVLRF9cRe6And0UvA&s=08" className="text-gray-400 hover:text-white transition-colors" aria-label="TikTok"><X size={20} /></a>
           </div>
         </div>
         <div>
